@@ -1,6 +1,6 @@
 {
   "name": "native-crypto",
-  "version": "1.8.1",
+  "version": "1.8.3",
   "description": "",
   "main": "lib/index.js",
   "browser": {
@@ -17,7 +17,11 @@
   "scripts": {
     "test": "node test/index.js",
     "browser": "zuul --no-coverage --local 8080 -- test/index.js",
-    "build": "rimraf browser && mkdirp browser && node ./bin.js"
+    "build": "rimraf browser && mkdirp browser && node ./bin.js",
+    "commit": "npm --no-git-tag-version version patch && git add npm-shrinkwrap.json && git add -p package.json && git-cz",
+    "rls": "release-it --ci --no-git.tag --no-github.release --no-npm.publish --no-gitlab.release",
+    "release": "release-it patch --ci",
+    "ncu": "ncu"
   },
   "author": "Calvin Metcalf <calvin.metcalf@gmail.com>",
   "license": "MIT",
@@ -49,7 +53,49 @@
     "rimraf": "^2.5.4",
     "tape": "^4.2.1",
     "unreachable-branch-transform": "^0.5.0",
-    "zuul": "^3.6.0"
+    "zuul": "^3.6.0",
+    "@commitlint/cli": "^7.4.0",
+    "@commitlint/config-conventional": "^7.3.1",
+    "@kilisio/panzoom": "^1.0.0",
+    "@kilisio/preprocess-0.3.10": "npm:@kilisio/preprocess@^0.3.10",
+    "@kilisio/tabulator": "^1.0.0",
+    "@kilisio/vue": "^1.0.0",
+    "@kilisio/vue_router": "^1.0.0",
+    "@release-it/conventional-changelog": "^1.1.0",
+    "absurd": "^0.3.9",
+    "assemblyscript": "^0.9.2",
+    "axios": "^0.19.2",
+    "clean-css": "^4.2.1",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.1.0",
+    "esm": "^3.1.4",
+    "express": "^4.17.1",
+    "helmet": "^3.18.0",
+    "html-minifier": "^4.0.0",
+    "javascript-obfuscator": "^0.18.4",
+    "jshint": "^2.9.7",
+    "npm-check-updates": "^4.0.1",
+    "open": "^6.4.0",
+    "pouchdb": "^7.1.1",
+    "pouchdb-find": "^7.1.1",
+    "prettier": "^1.16.1",
+    "ractive": "^1.3.8",
+    "release-it": "^12.4.3",
+    "rollup": "^1.10.0",
+    "rollup-plugin-analyzer": "^3.2.2",
+    "rollup-plugin-cleanup": "^3.1.1",
+    "rollup-plugin-clear": "^2.0.7",
+    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-copy": "^3.1.0",
+    "rollup-plugin-generate-package-json": "^3.1.3",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^4.2.3",
+    "rollup-plugin-obfuscator": "^0.1.0",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-terser": "^5.1.2",
+    "rollup-plugin-visualizer": "^2.7.2",
+    "selector-observer": "^2.1.6",
+    "serve": "^11.3.0"
   },
   "repository": {
     "type": "git",
@@ -58,5 +104,51 @@
   "optionalDependencies": {
     "raw-ecdsa": "^1.1.1",
     "rsa-keygen": "^1.0.5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog",
+      "maxHeaderWidth": 200,
+      "maxLineWidth": 200
+    }
+  },
+  "release-it": {
+    "git": {
+      "requireCleanWorkingDir": false,
+      "requireUpstream": false,
+      "requireCommits": false,
+      "addUntrackedFiles": false,
+      "commit": true,
+      "commitMessage": "Release ${version}",
+      "commitArgs": "",
+      "tag": true,
+      "tagName": "${version}",
+      "tagAnnotation": "Release ${version}",
+      "tagArgs": "",
+      "push": false
+    },
+    "github": {
+      "release": true,
+      "releaseName": "Release ${version}",
+      "releaseNotes": null,
+      "tokenRef": "GITHUB_TOKEN_RELEASE_IT",
+      "assets": "dist/"
+    },
+    "npm": {
+      "publish": false
+    },
+    "gitlab": {
+      "release": false,
+      "releaseName": "Release ${version}",
+      "releaseNotes": null,
+      "tokenRef": "GITLAB_TOKEN_RELEASE_IT",
+      "assets": "dist/"
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular",
+        "infile": "CHANGELOG.md"
+      }
+    }
   }
 }
